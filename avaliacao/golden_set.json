@@ -1,0 +1,42 @@
+[
+  {
+    "pergunta": "Quantos jogadores cada equipe pode ter em campo durante uma partida de futebol?",
+    "resposta_esperada": "Cada equipe pode ter no máximo 11 jogadores em campo durante uma partida de futebol, sendo um deles obrigatoriamente o goleiro."
+  },
+  {
+    "pergunta": "Quantas substituições são permitidas por equipe em uma partida oficial?",
+    "resposta_esperada": "Em partidas oficiais da FIFA, cada equipe pode realizar até 5 substituições por jogo, podendo ser feitas em até 3 momentos diferentes durante o tempo regulamentar, mais uma oportunidade durante a prorrogação."
+  },
+  {
+    "pergunta": "O que é a regra do impedimento no futebol?",
+    "resposta_esperada": "Um jogador está em impedimento quando, no momento em que a bola é tocada pelo companheiro, ele estiver mais próximo da linha de gol adversária do que a bola e o penúltimo adversário (normalmente o último defensor além do goleiro), desde que esteja participando ativamente do jogo."
+  },
+  {
+    "pergunta": "Quais são as situações em que um cartão vermelho deve ser exibido diretamente?",
+    "resposta_esperada": "Um cartão vermelho direto deve ser exibido por: falta violenta, conduta violenta, cuspir em alguém, impedir um gol ou oportunidade clara de gol tocando a bola com a mão (exceto goleiro na própria área), derrubar adversário em franca oportunidade de gol fora da área, e linguagem ou gesticulação ofensiva, insultuosa ou abusiva."
+  },
+  {
+    "pergunta": "Qual é a duração regulamentar de uma partida de futebol?",
+    "resposta_esperada": "Uma partida de futebol tem duração regulamentar de 90 minutos, divididos em dois tempos de 45 minutos cada, com intervalo de 15 minutos entre eles. O árbitro pode acrescentar tempo de compensação ao final de cada período."
+  },
+  {
+    "pergunta": "Como deve ser cobrado um pênalti?",
+    "resposta_esperada": "O pênalti é cobrado da marca penal, a 11 metros do gol. O cobrador deve ser identificado antes da cobrança. Todos os jogadores, exceto o goleiro e o cobrador, devem ficar fora da área e da marca penal. O goleiro deve permanecer na linha do gol entre os postes. O cobrador deve chutar a bola para frente e não pode tocá-la novamente antes que outro jogador o faça."
+  },
+  {
+    "pergunta": "O que acontece se a bola atingir o árbitro durante o jogo?",
+    "resposta_esperada": "Se a bola tocar o árbitro e entrar no gol, ou se o árbitro alterar a posse de bola ou criar uma oportunidade de ataque, o jogo deve ser interrompido e reiniciado com uma bola ao chão no local onde a bola tocou o árbitro."
+  },
+  {
+    "pergunta": "Quais são as dimensões oficiais do campo de futebol?",
+    "resposta_esperada": "O campo de futebol deve ter comprimento entre 90 e 120 metros e largura entre 45 e 90 metros para partidas nacionais. Para partidas internacionais, o comprimento deve ser entre 100 e 110 metros e a largura entre 64 e 75 metros."
+  },
+  {
+    "pergunta": "O que é considerado falta grave no futebol?",
+    "resposta_esperada": "Uma falta grave é aquela em que o jogador arrisca a integridade física do adversário ou usa força excessiva. É punida com cartão vermelho. Inclui entrada com os dois pés, sliding tackle por trás ou com violência desnecessária."
+  },
+  {
+    "pergunta": "Como funciona a regra do gol marcado com a mão?",
+    "resposta_esperada": "Um gol não é válido se a bola tocou a mão ou o braço do jogador atacante, seja intencional ou não, imediatamente antes do gol. O goleiro não pode marcar um gol diretamente com a mão a partir de sua própria área."
+  }
+]

@@ -1,0 +1,138 @@
+{
+  "name": "Assistente Regulamento Esportivo",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["message"]
+      },
+      "id": "node-tg-trigger",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 320],
+      "webhookId": "regulamento-esportivo-bot",
+      "credentials": {
+        "telegramApi": {
+          "id": "CONFIGURE_TELEGRAM_CREDENTIAL",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://172.17.0.1:8000/perguntar",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"pergunta\": \"{{ $json.message.text }}\",\n  \"usuario_id\": \"{{ $json.message.from.username || $json.message.from.id }}\"\n}",
+        "options": {
+          "timeout": 90000
+        }
+      },
+      "id": "node-chamar-agente",
+      "name": "Chamar Agente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 320]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $('Chamar Agente').item.json.resposta }}\n\n*Fontes:* {{ $('Chamar Agente').item.json.fontes.length > 0 ? $('Chamar Agente').item.json.fontes.join(', ') : 'N/A' }}\n*Urgencia:* {{ $('Chamar Agente').item.json.urgencia }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "node-tg-reply",
+      "name": "Responder no Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [680, 320],
+      "credentials": {
+        "telegramApi": {
+          "id": "CONFIGURE_TELEGRAM_CREDENTIAL",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-urgencia-alta",
+              "leftValue": "={{ $('Chamar Agente').item.json.urgencia }}",
+              "rightValue": "alta",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "node-if-urgencia",
+      "name": "Urgencia Alta?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 320]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.DISCORD_WEBHOOK_URGENTE }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"content\": \"🚨 **Dúvida urgente!**\\nUsuário: {{ $('Telegram Trigger').item.json.message.from.username || $('Telegram Trigger').item.json.message.from.id }}\\nDúvida: {{ $('Telegram Trigger').item.json.message.text }}\\nResposta: {{ $('Chamar Agente').item.json.resposta }}\"\n}",
+        "options": {}
+      },
+      "id": "node-discord-urgente",
+      "name": "Discord alertas-urgentes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.DISCORD_WEBHOOK_NORMAL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"content\": \"📝 **Nova dúvida registrada**\\nUsuário: {{ $('Telegram Trigger').item.json.message.from.username || $('Telegram Trigger').item.json.message.from.id }}\\nDúvida: {{ $('Telegram Trigger').item.json.message.text }}\\nResposta: {{ $('Chamar Agente').item.json.resposta }}\\nFontes: {{ $('Chamar Agente').item.json.fontes.join(', ') }}\"\n}",
+        "options": {}
+      },
+      "id": "node-discord-normal",
+      "name": "Discord duvidas-normais",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 440]
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [[{ "node": "Chamar Agente", "type": "main", "index": 0 }]]
+    },
+    "Chamar Agente": {
+      "main": [[{ "node": "Responder no Telegram", "type": "main", "index": 0 }]]
+    },
+    "Responder no Telegram": {
+      "main": [[{ "node": "Urgencia Alta?", "type": "main", "index": 0 }]]
+    },
+    "Urgencia Alta?": {
+      "main": [
+        [{ "node": "Discord alertas-urgentes", "type": "main", "index": 0 }],
+        [{ "node": "Discord duvidas-normais", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
